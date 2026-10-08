@@ -1,0 +1,11 @@
+--- apps/api/src/domain/coupons/coupon-evaluator.ts	2026-10-08 11:48:56.981105766 +1000
++++ /tmp/d01-mutated.ts	2026-10-08 11:49:42.235062788 +1000
+@@ -38,7 +38,7 @@
+     if (now < coupon.startsAt) return reject('NOT_STARTED','O cupom ainda não começou.');
+     if (now >= coupon.expiresAt) return reject('EXPIRED','O cupom está expirado.');
+     if (items.length === 0) return reject('EMPTY_CART','Adicione produtos ao carrinho antes de aplicar um cupom.');
+-    if (subtotalCents < 10000) return reject('CART_MINIMUM_NOT_MET','O subtotal integral precisa ser de pelo menos R$ 100,00.',10000-subtotalCents);
++    if (subtotalCents <= 10000) return reject('CART_MINIMUM_NOT_MET','O subtotal integral precisa ser de pelo menos R$ 100,00.',10000-subtotalCents);
+     if (subtotalCents < coupon.minimumSubtotalCents) return reject('COUPON_MINIMUM_NOT_MET',`Este cupom exige subtotal de pelo menos R$ ${(coupon.minimumSubtotalCents/100).toFixed(2).replace('.',',')}.`,coupon.minimumSubtotalCents-subtotalCents);
+ 
+     const hasInclusion = Boolean(coupon.includedProductIds?.length);

@@ -1,0 +1,43 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> ecommerce-cupons@1.0.0 test:coverage
+> npm run test:coverage -w apps/api
+
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> @ecommerce/api@1.0.0 test:coverage
+> jest --coverage --runInBand
+
+PASS src/domain/coupons/coupon-evaluator.spec.ts
+  CouponEvaluator
+    ✓ global boundary 9999 (3 ms)
+    ✓ global boundary 10000 (1 ms)
+    ✓ global boundary 10001
+    ✓ specific boundary 19999
+    ✓ specific boundary 20000
+    ✓ specific boundary 20001
+    ✓ excludes products and discounts only eligible subtotal (1 ms)
+    ✓ supports inclusion and exclusion precedence
+    ✓ returns no eligible items
+    ✓ expired (1 ms)
+    ✓ inactive (1 ms)
+    ✓ not started
+    ✓ rounds once in cents
+    ✓ never produces negative totals (1 ms)
+    ✓ handles empty cart and no coupon
+    ✓ uses fixed clock boundaries in UTC
+    ✓ covers acceptance scenarios A-H (2 ms)
+    ✓ covers standalone product eligibility partitions
+
+---------------------|---------|----------|---------|---------|-------------------
+File                 | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+---------------------|---------|----------|---------|---------|-------------------
+All files            |     100 |       96 |     100 |     100 |                   
+ coupon-evaluator.ts |     100 |       96 |     100 |     100 | 24                
+---------------------|---------|----------|---------|---------|-------------------
+Test Suites: 1 passed, 1 total
+Tests:       18 passed, 18 total
+Snapshots:   0 total
+Time:        3.105 s
+Ran all test suites.
+exit=0

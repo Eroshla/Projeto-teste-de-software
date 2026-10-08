@@ -1,0 +1,80 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> ecommerce-cupons@1.0.0 test
+> npm run test -w apps/api --runInBand
+
+npm warn Unknown cli config "--runInBand". This will stop working in the next major version of npm.
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> @ecommerce/api@1.0.0 test
+> jest --runInBand
+
+FAIL src/domain/coupons/coupon-evaluator.spec.ts
+  CouponEvaluator
+    ✓ global boundary 9999 (2 ms)
+    ✓ global boundary 10000 (1 ms)
+    ✓ global boundary 10001
+    ✓ specific boundary 19999 (1 ms)
+    ✓ specific boundary 20000
+    ✓ specific boundary 20001
+    ✓ excludes products and discounts only eligible subtotal (1 ms)
+    ✓ supports inclusion and exclusion precedence
+    ✓ returns no eligible items (1 ms)
+    ✓ expired
+    ✓ inactive
+    ✓ not started
+    ✕ rounds once in cents (1 ms)
+    ✓ never produces negative totals
+    ✓ handles empty cart and no coupon
+    ✓ uses fixed clock boundaries in UTC
+    ✕ covers acceptance scenarios A-H (1 ms)
+    ✓ covers standalone product eligibility partitions
+
+  ● CouponEvaluator › rounds once in cents
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 1001
+    Received: 1000
+
+      27 |     ['expired',{expiresAt:new Date('2026-01-01T00:00:00Z')},'EXPIRED'],['inactive',{isActive:false},'INACTIVE'],['not started',{startsAt:new Date('2030-01-01T00:00:00Z')},'NOT_STARTED'],
+      28 |   ])('%s', (_label,overrides,status) => expect(evalr.evaluate([{product:product('p'),quantity:1}],validCoupon(overrides),now).couponStatus).toBe(status));
+    > 29 |   it('rounds once in cents', () => { const result = evalr.evaluate([{product:product('p','p',10005),quantity:1}],validCoupon(),now); expect(result.discountCents).toBe(1001); });
+         |                                                                                                                                                                   ^
+      30 |   it('never produces negative totals', () => { const result = evalr.evaluate([{product:product('p','p',10000),quantity:1}],validCoupon({percentageBps:100000}),now); expect(result.totalCents).toBe(0); });
+      31 |   it('handles empty cart and no coupon', () => { expect(evalr.evaluate([],validCoupon(),now).couponStatus).toBe('EMPTY_CART'); expect(evalr.evaluate([],null,now).couponStatus).toBe('NONE'); });
+      32 |   it('uses fixed clock boundaries in UTC', () => { expect(evalr.evaluate([{product:product('p'),quantity:1}],validCoupon({startsAt:now}),now).couponStatus).toBe('APPLIED'); expect(evalr.evaluate([{product:product('p'),quantity:1}],validCoupon({expiresAt:now}),now).couponStatus).toBe('EXPIRED'); });
+
+      at Object.<anonymous> (src/domain/coupons/coupon-evaluator.spec.ts:29:163)
+
+  ● CouponEvaluator › covers acceptance scenarios A-H
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 1001
+    Received: 1000
+
+      40 |     expect(evalr.evaluate([{product:gift,quantity:2}],validCoupon({excludedProductIds:['g']}),now).couponStatus).toBe('NO_ELIGIBLE_ITEMS');
+      41 |     expect(evalr.evaluate([{product:webcam,quantity:1},{product:mouse,quantity:1},{product:mousepad,quantity:1}],validCoupon({minimumSubtotalCents:20000}),now).couponStatus).toBe('COUPON_MINIMUM_NOT_MET');
+    > 42 |     expect(evalr.evaluate([{product:product('round','round',10005),quantity:1}],validCoupon(),now).discountCents).toBe(1001);
+         |                                                                                                                   ^
+      43 |   });
+      44 |   it('covers standalone product eligibility partitions', () => {
+      45 |     expect(isProductEligible('p',{})).toBe(true);
+
+      at Object.<anonymous> (src/domain/coupons/coupon-evaluator.spec.ts:42:115)
+
+Test Suites: 1 failed, 1 total
+Tests:       2 failed, 16 passed, 18 total
+Snapshots:   0 total
+Time:        2.241 s
+Ran all test suites.
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path /workspace/scratch/1baa0b704d5d/repo-fix/apps/api
+npm error workspace @ecommerce/api@1.0.0
+npm error location /workspace/scratch/1baa0b704d5d/repo-fix/apps/api
+npm error command failed
+npm error command sh -c jest --runInBand
+
+EXIT_CODE=1

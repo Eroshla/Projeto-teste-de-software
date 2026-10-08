@@ -14,7 +14,11 @@ export interface Evaluation {
   couponStatus:CouponStatus; couponCode:string|null; rejectionReason:string|null; amountToMinimumCents:number;
 }
 
-const money = (value:number) => Math.max(0, Math.round(value));
+function roundNonNegativeCents(value:number):number {
+  return Math.max(0, Math.round(value));
+}
+const calculateDiscountCents = (eligibleSubtotalCents:number, percentageBps:number) =>
+  Math.min(eligibleSubtotalCents, roundNonNegativeCents(eligibleSubtotalCents * percentageBps / 10000));
 
 export class CouponEvaluator {
   evaluate(items:CartItem[], coupon:CouponSnapshot|null|undefined, now = new Date()): Evaluation {
@@ -41,9 +45,10 @@ export class CouponEvaluator {
     const included = new Set(coupon.includedProductIds ?? []);
     const excluded = new Set(coupon.excludedProductIds ?? []);
     const lines = baseLines.map(line => ({...line, eligible:hasInclusion ? included.has(line.productId) && !excluded.has(line.productId) : !excluded.has(line.productId)}));
-    const eligibleSubtotalCents = lines.filter(line => line.eligible).reduce((sum,line) => sum + line.lineSubtotalCents, 0);
+    const eligibleLines = lines.filter(line => line.eligible);
+    const eligibleSubtotalCents = eligibleLines.reduce((sum,line) => sum + line.lineSubtotalCents, 0);
     if (eligibleSubtotalCents === 0) return {...reject('NO_ELIGIBLE_ITEMS','Nenhum produto do carrinho é elegível para este cupom.'), lines};
-    const discountCents = Math.min(eligibleSubtotalCents, money(eligibleSubtotalCents * coupon.percentageBps / 10000));
+    const discountCents = calculateDiscountCents(eligibleSubtotalCents, coupon.percentageBps);
     return {lines, subtotalCents, eligibleSubtotalCents, discountCents, totalCents:Math.max(0, subtotalCents-discountCents), couponStatus:'APPLIED', couponCode:normalizedCode, rejectionReason:null, amountToMinimumCents:0};
   }
 }

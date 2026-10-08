@@ -1,0 +1,18 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+Listing tests:
+  [chromium] › shop.spec.ts:35:5 › E2E01 marketplace loads
+  [chromium] › shop.spec.ts:40:5 › E2E02 opens a salespage with coupon compatibility
+  [chromium] › shop.spec.ts:47:5 › E2E03 adds a product from the marketplace
+  [chromium] › shop.spec.ts:53:5 › E2E04 adds a product from its salespage
+  [chromium] › shop.spec.ts:60:5 › E2E05 changes quantity in the cart
+  [chromium] › shop.spec.ts:68:5 › E2E06 removes a product
+  [chromium] › shop.spec.ts:75:5 › E2E07 applies BEMVINDO10
+  [chromium] › shop.spec.ts:84:5 › E2E08 rejects BEMVINDO10 below the global minimum
+  [chromium] › shop.spec.ts:92:5 › E2E09 rejects SUPER20 below R$ 200
+  [chromium] › shop.spec.ts:100:5 › E2E10 applies SUPER20 exactly at R$ 200
+  [chromium] › shop.spec.ts:109:5 › E2E11 excludes Gift Card from SUPER20 discount
+  [chromium] › shop.spec.ts:121:5 › E2E12 preserves the cart and applied coupon after reload
+  [chromium] › shop.spec.ts:132:5 › E2E13 shows compatible and incompatible coupons on salespages
+  [chromium] › shop.spec.ts:139:5 › E2E14 removes a coupon and recalculates the total
+Total: 14 tests in 1 file
+exit=0

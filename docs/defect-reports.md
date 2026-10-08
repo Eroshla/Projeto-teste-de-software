@@ -1,13 +1,23 @@
-# Defeitos controlados
+# Relatórios de defeitos controlados
 
-Os dois mutantes abaixo são definidos para demonstração, mas não ficam ativos na versão entregue.
+Os mutantes foram executados em cópias temporárias da implementação correta. Nenhuma implementação defeituosa permanece ativa.
 
 ## D01 — limite global exclusivo
 
-**Mutação:** trocar `subtotalCents < 10000` por `subtotalCents <= 10000` em `CouponEvaluator`. **Reprodução:** carrinho de 10.000 centavos com BEMVINDO10. **Esperado:** `APPLIED`; **obtido no mutante:** `CART_MINIMUM_NOT_MET`. Severidade alta, prioridade alta. Detectado pelos casos parametrizados do teste de limite global. Correção: comparação inclusiva na implementação atual.
+- **Mutação:** trocar `subtotalCents < 10000` por `subtotalCents <= 10000`.
+- **Passos:** aplicar `mutation.patch`; executar `npx jest --runInBand -t "global boundary"` em `apps/api`; observar falha; restaurar fonte; repetir comando.
+- **Esperado no mutante:** o caso de exatamente 10000 centavos deveria ser `APPLIED`.
+- **Obtido no mutante:** `CART_MINIMUM_NOT_MET`; 1 falha, 15 testes ignorados e 2 aprovados na seleção.
+- **Restaurado:** seleção voltou a 3 aprovados e código 0.
+- **Severidade/prioridade:** alta/alta.
+- Evidências: [`mutation.patch`](../evidence/defects/d01/mutation.patch), [`failure.log`](../evidence/defects/d01/failure.log), [`restored.log`](../evidence/defects/d01/restored.log).
 
-## D02 — ignorar exclusões
+## D02 — exclusões ignoradas
 
-**Mutação:** calcular `eligibleSubtotalCents` com todas as linhas. **Reprodução:** Headset 12000 + Gift Card 6000 com BEMVINDO10. **Esperado:** elegível 12000/desconto 1200; mutante: elegível 18000/desconto 1800. Severidade alta, prioridade alta. Detectado por “excludes products and discounts only eligible subtotal”. Correção: filtro `line.eligible` atual.
-
-As execuções reais estão em `evidence/defects/d01-run.txt` e `d02-run.txt`. D01 produziu 3 falhas em 18 testes; D02 produziu 4 falhas em 18 testes. Ambos foram restaurados e a suíte funcional voltou a 18/18 aprovada.
+- **Mutação:** calcular `eligibleSubtotalCents` com `lines.reduce`, ignorando `eligibleLines`.
+- **Passos:** aplicar `mutation.patch`; executar `npx jest --runInBand -t "excludes products|returns no eligible"`; observar falha; restaurar fonte; repetir comando.
+- **Esperado no mutante:** Gift Card excluído não entra no desconto e carrinho somente com Gift Card deve ser `NO_ELIGIBLE_ITEMS`.
+- **Obtido no mutante:** elegível 18000 em vez de 12000 e status `APPLIED` em vez de `NO_ELIGIBLE_ITEMS`; 2 falhas na seleção.
+- **Restaurado:** seleção voltou a 2 aprovados e código 0.
+- **Severidade/prioridade:** alta/alta.
+- Evidências: [`mutation.patch`](../evidence/defects/d02/mutation.patch), [`failure.log`](../evidence/defects/d02/failure.log), [`restored.log`](../evidence/defects/d02/restored.log).

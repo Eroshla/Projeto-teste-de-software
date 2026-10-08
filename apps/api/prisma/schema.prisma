@@ -35,12 +35,14 @@ model Coupon {
 }
 
 model CouponProduct {
+  id        String             @id @default(cuid())
   couponId  String
   productId String
   mode      CouponProductMode
   coupon    Coupon  @relation(fields:[couponId], references:[id], onDelete: Cascade)
   product   Product @relation(fields:[productId], references:[id], onDelete: Cascade)
-  @@id([couponId, productId])
+  @@unique([couponId, productId, mode])
+  @@index([couponId, productId])
 }
 
 enum CouponProductMode {

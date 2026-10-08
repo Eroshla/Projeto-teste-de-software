@@ -11,15 +11,17 @@
     "db:setup": "dotenv -e .env -- npm run db:setup -w apps/api",
     "db:seed": "dotenv -e .env -- npm run db:seed -w apps/api",
     "test": "npm run test -w apps/api",
-    "test:integration": "dotenv -e .env -- npm run test:integration -w apps/api",
-    "test:e2e": "dotenv -e .env -- npm run test:e2e -w apps/web",
+    "test:integration": "npm run test:integration -w apps/api",
+    "test:e2e": "npm run test:e2e -w apps/web",
     "test:coverage": "npm run test:coverage -w apps/api",
     "report:pdf": "node scripts/report-pdf.mjs",
-    "validate": "npm run typecheck && npm run lint && npm run test && npm run build"
+    "validate:fast": "npm run typecheck && npm run lint && npm test && npm run build",
+    "validate": "npm run typecheck && npm run lint && npm test && npm run test:integration && npm run build && npm run test:e2e && npm run test:coverage && npm run report:pdf"
   },
   "devDependencies": {
     "concurrently": "^9.1.2",
     "dotenv-cli": "^8.0.0",
-    "typescript": "^5.7.3"
+    "typescript": "^5.7.3",
+    "marked": "^15.0.6"
   }
 }

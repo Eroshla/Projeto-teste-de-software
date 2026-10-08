@@ -1,0 +1,30 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+PASS src/domain/coupons/coupon-evaluator.spec.ts
+  CouponEvaluator
+    ✓ global boundary 9999 (6 ms)
+    ✓ global boundary 10000
+    ✓ global boundary 10001 (1 ms)
+    ○ skipped specific boundary 19999
+    ○ skipped specific boundary 20000
+    ○ skipped specific boundary 20001
+    ○ skipped excludes products and discounts only eligible subtotal
+    ○ skipped supports inclusion and exclusion precedence
+    ○ skipped returns no eligible items
+    ○ skipped expired
+    ○ skipped inactive
+    ○ skipped not started
+    ○ skipped rounds once in cents
+    ○ skipped never produces negative totals
+    ○ skipped handles empty cart and no coupon
+    ○ skipped uses fixed clock boundaries in UTC
+    ○ skipped covers acceptance scenarios A-H
+    ○ skipped covers standalone product eligibility partitions
+
+Test Suites: 1 passed, 1 total
+Tests:       15 skipped, 3 passed, 18 total
+Snapshots:   0 total
+Time:        2.425 s, estimated 3 s
+Ran all test suites with tests matching "global boundary".
+
+COMMAND=npx jest --runInBand -t "global boundary"
+EXIT_CODE=0

@@ -8,6 +8,6 @@ async function bootstrap() {
   app.setGlobalPrefix('api');
   app.enableCors({origin:process.env.FRONTEND_ORIGIN || 'http://localhost:3000'});
   app.useGlobalPipes(new ValidationPipe({transform:true,whitelist:true,forbidNonWhitelisted:true,stopAtFirstError:false}));
-  await app.listen(Number(process.env.PORT || 3001));
+  await app.listen(Number(process.env.PORT || 3001), '127.0.0.1');
 }
 bootstrap();

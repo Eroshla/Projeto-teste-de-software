@@ -1,0 +1,11 @@
+--- apps/api/src/domain/coupons/coupon-evaluator.ts	2026-10-08 11:48:56.981105766 +1000
++++ /tmp/d02-mutated.ts	2026-10-08 11:49:42.235175278 +1000
+@@ -46,7 +46,7 @@
+     const excluded = new Set(coupon.excludedProductIds ?? []);
+     const lines = baseLines.map(line => ({...line, eligible:hasInclusion ? included.has(line.productId) && !excluded.has(line.productId) : !excluded.has(line.productId)}));
+     const eligibleLines = lines.filter(line => line.eligible);
+-    const eligibleSubtotalCents = eligibleLines.reduce((sum,line) => sum + line.lineSubtotalCents, 0);
++    const eligibleSubtotalCents = lines.reduce((sum,line) => sum + line.lineSubtotalCents, 0);
+     if (eligibleSubtotalCents === 0) return {...reject('NO_ELIGIBLE_ITEMS','Nenhum produto do carrinho é elegível para este cupom.'), lines};
+     const discountCents = calculateDiscountCents(eligibleSubtotalCents, coupon.percentageBps);
+     return {lines, subtotalCents, eligibleSubtotalCents, discountCents, totalCents:Math.max(0, subtotalCents-discountCents), couponStatus:'APPLIED', couponCode:normalizedCode, rejectionReason:null, amountToMinimumCents:0};

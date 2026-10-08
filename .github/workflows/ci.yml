@@ -1,16 +1,21 @@
 name: CI
-on:
-  push:
-    branches: [main, master, develop]
-  pull_request:
+on: [push, pull_request]
+
+permissions:
+  contents: read
+
 jobs:
   validate:
     strategy:
-      matrix: {os: [ubuntu-latest, windows-latest]}
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     env:
       DATABASE_URL: file:./dev.db
+      PORT: 3001
       FRONTEND_ORIGIN: http://localhost:3000
+      NEXT_PUBLIC_API_URL: http://localhost:3001/api
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -30,6 +35,13 @@ jobs:
         if: matrix.os == 'windows-latest'
       - run: npm run test:e2e
       - run: npm run test:coverage
+      - run: npm run report:pdf
       - uses: actions/upload-artifact@v4
         if: always()
-        with: {name: reports-${{ matrix.os }}, path: "apps/api/coverage"}
+        with:
+          name: reports-${{ matrix.os }}
+          path: |
+            apps/api/coverage
+            apps/web/playwright-report
+            apps/web/test-results
+            reports/relatorio.pdf

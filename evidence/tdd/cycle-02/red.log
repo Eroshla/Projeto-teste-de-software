@@ -1,0 +1,124 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> ecommerce-cupons@1.0.0 test
+> npm run test -w apps/api --runInBand
+
+npm warn Unknown cli config "--runInBand". This will stop working in the next major version of npm.
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> @ecommerce/api@1.0.0 test
+> jest --runInBand
+
+FAIL src/domain/coupons/coupon-evaluator.spec.ts
+  CouponEvaluator
+    ✓ global boundary 9999 (2 ms)
+    ✓ global boundary 10000
+    ✓ global boundary 10001 (1 ms)
+    ✓ specific boundary 19999
+    ✓ specific boundary 20000 (1 ms)
+    ✓ specific boundary 20001
+    ✕ excludes products and discounts only eligible subtotal (1 ms)
+    ✕ supports inclusion and exclusion precedence (1 ms)
+    ✕ returns no eligible items (2 ms)
+    ✓ expired (1 ms)
+    ✓ inactive
+    ✓ not started
+    ✓ rounds once in cents (1 ms)
+    ✓ never produces negative totals
+    ✓ handles empty cart and no coupon
+    ✓ uses fixed clock boundaries in UTC
+    ✕ covers acceptance scenarios A-H (3 ms)
+    ✓ covers standalone product eligibility partitions
+
+  ● CouponEvaluator › excludes products and discounts only eligible subtotal
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 12000
+    Received: 18000
+
+      17 |   it('excludes products and discounts only eligible subtotal', () => {
+      18 |     const result = evalr.evaluate([{product:product('h','headset',12000),quantity:1},{product:product('g','gift',6000),quantity:1}],validCoupon({excludedProductIds:['g']}),now);
+    > 19 |     expect(result.eligibleSubtotalCents).toBe(12000); expect(result.discountCents).toBe(1200); expect(result.totalCents).toBe(16800); expect(result.lines[1].eligible).toBe(false);
+         |                                          ^
+      20 |   });
+      21 |   it('supports inclusion and exclusion precedence', () => {
+      22 |     const result = evalr.evaluate([{product:product('a','a',10000),quantity:1},{product:product('b','b',10000),quantity:1}],validCoupon({includedProductIds:['a','b'],excludedProductIds:['b']}),now);
+
+      at Object.<anonymous> (src/domain/coupons/coupon-evaluator.spec.ts:19:42)
+
+  ● CouponEvaluator › supports inclusion and exclusion precedence
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 10000
+    Received: 20000
+
+      21 |   it('supports inclusion and exclusion precedence', () => {
+      22 |     const result = evalr.evaluate([{product:product('a','a',10000),quantity:1},{product:product('b','b',10000),quantity:1}],validCoupon({includedProductIds:['a','b'],excludedProductIds:['b']}),now);
+    > 23 |     expect(result.eligibleSubtotalCents).toBe(10000);
+         |                                          ^
+      24 |   });
+      25 |   it('returns no eligible items', () => { expect(evalr.evaluate([{product:product('g','gift',12000),quantity:1}],validCoupon({excludedProductIds:['g']}),now).couponStatus).toBe('NO_ELIGIBLE_ITEMS'); });
+      26 |   it.each([
+
+      at Object.<anonymous> (src/domain/coupons/coupon-evaluator.spec.ts:23:42)
+
+  ● CouponEvaluator › returns no eligible items
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "NO_ELIGIBLE_ITEMS"
+    Received: "APPLIED"
+
+      23 |     expect(result.eligibleSubtotalCents).toBe(10000);
+      24 |   });
+    > 25 |   it('returns no eligible items', () => { expect(evalr.evaluate([{product:product('g','gift',12000),quantity:1}],validCoupon({excludedProductIds:['g']}),now).couponStatus).toBe('NO_ELIGIBLE_ITEMS'); });
+         |                                                                                                                                                                             ^
+      26 |   it.each([
+      27 |     ['expired',{expiresAt:new Date('2026-01-01T00:00:00Z')},'EXPIRED'],['inactive',{isActive:false},'INACTIVE'],['not started',{startsAt:new Date('2030-01-01T00:00:00Z')},'NOT_STARTED'],
+      28 |   ])('%s', (_label,overrides,status) => expect(evalr.evaluate([{product:product('p'),quantity:1}],validCoupon(overrides),now).couponStatus).toBe(status));
+
+      at Object.<anonymous> (src/domain/coupons/coupon-evaluator.spec.ts:25:173)
+
+  ● CouponEvaluator › covers acceptance scenarios A-H
+
+    expect(received).toMatchObject(expected)
+
+    - Expected  - 3
+    + Received  + 3
+
+      Object {
+    -   "discountCents": 4000,
+    -   "eligibleSubtotalCents": 20000,
+    +   "discountCents": 5200,
+    +   "eligibleSubtotalCents": 26000,
+        "subtotalCents": 26000,
+    -   "totalCents": 22000,
+    +   "totalCents": 20800,
+      }
+
+      35 |     expect(evalr.evaluate([{product:headset,quantity:1}],validCoupon({code:'BEMVINDO10',excludedProductIds:['g']}),now)).toMatchObject({discountCents:1200,totalCents:10800,couponStatus:'APPLIED'});
+      36 |     expect(evalr.evaluate([{product:headset,quantity:1},{product:mouse,quantity:1}],validCoupon({code:'SUPER20',minimumSubtotalCents:20000,excludedProductIds:['g'],percentageBps:2000}),now)).toMatchObject({discountCents:4000,totalCents:16000});
+    > 37 |     expect(evalr.evaluate([{product:headset,quantity:1},{product:mouse,quantity:1},{product:gift,quantity:1}],validCoupon({code:'SUPER20',minimumSubtotalCents:20000,excludedProductIds:['g'],percentageBps:2000}),now)).toMatchObject({subtotalCents:26000,eligibleSubtotalCents:20000,discountCents:4000,totalCents:22000});
+         |                                                                                                                                                                                                                          ^
+      38 |     expect(evalr.evaluate([{product:webcam,quantity:1}],validCoupon(),now).couponStatus).toBe('CART_MINIMUM_NOT_MET');
+      39 |     expect(evalr.evaluate([{product:mouse,quantity:1},{product:mousepad,quantity:1}],validCoupon({code:'GAMER15',percentageBps:1500,includedProductIds:['m']}),now)).toMatchObject({eligibleSubtotalCents:8000,discountCents:1200,totalCents:8800});
+      40 |     expect(evalr.evaluate([{product:gift,quantity:2}],validCoupon({excludedProductIds:['g']}),now).couponStatus).toBe('NO_ELIGIBLE_ITEMS');
+
+      at Object.<anonymous> (src/domain/coupons/coupon-evaluator.spec.ts:37:218)
+
+Test Suites: 1 failed, 1 total
+Tests:       4 failed, 14 passed, 18 total
+Snapshots:   0 total
+Time:        2.217 s, estimated 3 s
+Ran all test suites.
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path /workspace/scratch/1baa0b704d5d/repo-fix/apps/api
+npm error workspace @ecommerce/api@1.0.0
+npm error location /workspace/scratch/1baa0b704d5d/repo-fix/apps/api
+npm error command failed
+npm error command sh -c jest --runInBand
+
+EXIT_CODE=1
