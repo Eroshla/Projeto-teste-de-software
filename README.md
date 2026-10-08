@@ -34,3 +34,5 @@ As regras, tabela de decisão, casos formais e roteiro oral estão em `docs/`. O
 ## Problemas comuns
 
 Se a API não conectar, confira `DATABASE_URL`, rode `npx prisma generate --schema apps/api/prisma/schema.prisma` e `npm run db:setup`. Se o E2E não encontrar navegador, execute `npx playwright install chromium`.
+
+Projeto publicado: **Projeto-teste-de-software** — trabalho acadêmico de Testes de Software.
