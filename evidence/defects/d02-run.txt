@@ -1,0 +1,5 @@
+D02 — execução do mutante de exclusão
+Comando: npm test
+Mutação: eligibleSubtotalCents calculado com todas as linhas, sem filter(line => line.eligible)
+Resultado real: FAIL — 18 testes, 14 aprovados e 4 reprovados. O caso misto Headset + Gift Card esperava elegível 12000/desconto 1200 e recebeu elegível 18000/desconto 1800; o caso apenas Gift Card deixou de ser NO_ELIGIBLE_ITEMS.
+Estado restaurado para o filtro de elegibilidade após a execução.

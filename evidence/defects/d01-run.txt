@@ -1,0 +1,5 @@
+D01 — execução do mutante de limite global
+Comando: npm test -- --runInBand
+Mutação: subtotalCents <= 10000
+Resultado real: FAIL — 18 testes, 15 aprovados e 3 reprovados. O caso global boundary 10000 esperava APPLIED e recebeu CART_MINIMUM_NOT_MET; os cenários dependentes do limite também falharam.
+Estado restaurado para subtotalCents < 10000 após a execução.
