@@ -1,0 +1,35 @@
+name: CI
+on:
+  push:
+    branches: [main, master, develop]
+  pull_request:
+jobs:
+  validate:
+    strategy:
+      matrix: {os: [ubuntu-latest, windows-latest]}
+    runs-on: ${{ matrix.os }}
+    env:
+      DATABASE_URL: file:./dev.db
+      FRONTEND_ORIGIN: http://localhost:3000
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: 22, cache: npm}
+      - run: npm ci
+      - run: npx prisma generate --schema apps/api/prisma/schema.prisma
+      - run: npx prisma migrate deploy --schema apps/api/prisma/schema.prisma
+      - run: npm run db:seed
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm test
+      - run: npm run test:integration
+      - run: npm run build
+      - run: npx playwright install --with-deps chromium
+        if: matrix.os == 'ubuntu-latest'
+      - run: npx playwright install chromium
+        if: matrix.os == 'windows-latest'
+      - run: npm run test:e2e
+      - run: npm run test:coverage
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: {name: reports-${{ matrix.os }}, path: "apps/api/coverage"}
