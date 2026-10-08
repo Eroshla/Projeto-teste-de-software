@@ -1,0 +1,16 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> ecommerce-cupons@1.0.0 typecheck
+> npm run typecheck -w apps/api && npm run typecheck -w apps/web
+
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> @ecommerce/api@1.0.0 typecheck
+> tsc -p tsconfig.json --noEmit
+
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> @ecommerce/web@1.0.0 typecheck
+> tsc -p tsconfig.json --noEmit
+
+exit=0

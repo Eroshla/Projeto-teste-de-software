@@ -1,0 +1,11 @@
+--- /tmp/cycle3-green.ts	2026-10-08 11:47:01.423498905 +1000
++++ apps/api/src/domain/coupons/coupon-evaluator.ts	2026-10-08 11:47:01.423751968 +1000
+@@ -14,7 +14,7 @@
+   couponStatus:CouponStatus; couponCode:string|null; rejectionReason:string|null; amountToMinimumCents:number;
+ }
+ 
+-const money = (value:number) => Math.max(0, Math.round(value));
++const money = (value:number) => Math.max(0, Math.floor(value));
+ const calculateDiscountCents = (eligibleSubtotalCents:number, percentageBps:number) =>
+   Math.min(eligibleSubtotalCents, money(eligibleSubtotalCents * percentageBps / 10000));
+ 

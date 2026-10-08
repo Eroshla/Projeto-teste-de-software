@@ -1,0 +1,402 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> ecommerce-cupons@1.0.0 test:e2e
+> npm run test:e2e -w apps/web
+
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> @ecommerce/web@1.0.0 test:e2e
+> playwright test
+
+[WebServer] (node:44) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+[WebServer] (node:57) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:70) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:92) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+[WebServer] (node:105) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:125) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 14 tests using 1 worker
+
+(node:147) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘   1 [chromium] › tests/shop.spec.ts:35:5 › E2E01 marketplace loads (3ms)
+(node:159) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘   2 [chromium] › tests/shop.spec.ts:40:5 › E2E02 opens a salespage with coupon compatibility (2ms)
+(node:171) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘   3 [chromium] › tests/shop.spec.ts:47:5 › E2E03 adds a product from the marketplace (2ms)
+(node:183) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘   4 [chromium] › tests/shop.spec.ts:53:5 › E2E04 adds a product from its salespage (2ms)
+(node:195) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘   5 [chromium] › tests/shop.spec.ts:60:5 › E2E05 changes quantity in the cart (3ms)
+(node:207) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘   6 [chromium] › tests/shop.spec.ts:68:5 › E2E06 removes a product (2ms)
+(node:219) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘   7 [chromium] › tests/shop.spec.ts:75:5 › E2E07 applies BEMVINDO10 (2ms)
+(node:231) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘   8 [chromium] › tests/shop.spec.ts:84:5 › E2E08 rejects BEMVINDO10 below the global minimum (2ms)
+(node:243) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘   9 [chromium] › tests/shop.spec.ts:92:5 › E2E09 rejects SUPER20 below R$ 200 (2ms)
+(node:255) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  10 [chromium] › tests/shop.spec.ts:100:5 › E2E10 applies SUPER20 exactly at R$ 200 (2ms)
+(node:267) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  11 [chromium] › tests/shop.spec.ts:109:5 › E2E11 excludes Gift Card from SUPER20 discount (2ms)
+(node:279) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  12 [chromium] › tests/shop.spec.ts:121:5 › E2E12 preserves the cart and applied coupon after reload (2ms)
+(node:291) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  13 [chromium] › tests/shop.spec.ts:132:5 › E2E13 shows compatible and incompatible coupons on salespages (2ms)
+(node:303) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  14 [chromium] › tests/shop.spec.ts:139:5 › E2E14 removes a coupon and recalculates the total (2ms)
+
+
+  1) [chromium] › tests/shop.spec.ts:35:5 › E2E01 marketplace loads ────────────────────────────────
+
+    Error: browserType.launch: Executable doesn't exist at /root/.cache/ms-playwright/chromium_headless_shell-1248/chrome-headless-shell-linux64/chrome-headless-shell
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     npx playwright install                                 ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: test-results/shop-E2E01-marketplace-loads-chromium/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/shop-E2E01-marketplace-loads-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/shop-E2E01-marketplace-loads-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) [chromium] › tests/shop.spec.ts:40:5 › E2E02 opens a salespage with coupon compatibility ──────
+
+    Error: browserType.launch: Executable doesn't exist at /root/.cache/ms-playwright/chromium_headless_shell-1248/chrome-headless-shell-linux64/chrome-headless-shell
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     npx playwright install                                 ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: test-results/shop-E2E02-opens-a-salespage-with-coupon-compatibility-chromium/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/shop-E2E02-opens-a-salespage-with-coupon-compatibility-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/shop-E2E02-opens-a-salespage-with-coupon-compatibility-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  3) [chromium] › tests/shop.spec.ts:47:5 › E2E03 adds a product from the marketplace ──────────────
+
+    Error: browserType.launch: Executable doesn't exist at /root/.cache/ms-playwright/chromium_headless_shell-1248/chrome-headless-shell-linux64/chrome-headless-shell
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     npx playwright install                                 ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: test-results/shop-E2E03-adds-a-product-from-the-marketplace-chromium/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/shop-E2E03-adds-a-product-from-the-marketplace-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/shop-E2E03-adds-a-product-from-the-marketplace-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  4) [chromium] › tests/shop.spec.ts:53:5 › E2E04 adds a product from its salespage ────────────────
+
+    Error: browserType.launch: Executable doesn't exist at /root/.cache/ms-playwright/chromium_headless_shell-1248/chrome-headless-shell-linux64/chrome-headless-shell
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     npx playwright install                                 ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: test-results/shop-E2E04-adds-a-product-from-its-salespage-chromium/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/shop-E2E04-adds-a-product-from-its-salespage-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/shop-E2E04-adds-a-product-from-its-salespage-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  5) [chromium] › tests/shop.spec.ts:60:5 › E2E05 changes quantity in the cart ─────────────────────
+
+    Error: browserType.launch: Executable doesn't exist at /root/.cache/ms-playwright/chromium_headless_shell-1248/chrome-headless-shell-linux64/chrome-headless-shell
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     npx playwright install                                 ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: test-results/shop-E2E05-changes-quantity-in-the-cart-chromium/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/shop-E2E05-changes-quantity-in-the-cart-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/shop-E2E05-changes-quantity-in-the-cart-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  6) [chromium] › tests/shop.spec.ts:68:5 › E2E06 removes a product ────────────────────────────────
+
+    Error: browserType.launch: Executable doesn't exist at /root/.cache/ms-playwright/chromium_headless_shell-1248/chrome-headless-shell-linux64/chrome-headless-shell
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     npx playwright install                                 ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: test-results/shop-E2E06-removes-a-product-chromium/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/shop-E2E06-removes-a-product-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/shop-E2E06-removes-a-product-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  7) [chromium] › tests/shop.spec.ts:75:5 › E2E07 applies BEMVINDO10 ───────────────────────────────
+
+    Error: browserType.launch: Executable doesn't exist at /root/.cache/ms-playwright/chromium_headless_shell-1248/chrome-headless-shell-linux64/chrome-headless-shell
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     npx playwright install                                 ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: test-results/shop-E2E07-applies-BEMVINDO10-chromium/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/shop-E2E07-applies-BEMVINDO10-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/shop-E2E07-applies-BEMVINDO10-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  8) [chromium] › tests/shop.spec.ts:84:5 › E2E08 rejects BEMVINDO10 below the global minimum ──────
+
+    Error: browserType.launch: Executable doesn't exist at /root/.cache/ms-playwright/chromium_headless_shell-1248/chrome-headless-shell-linux64/chrome-headless-shell
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     npx playwright install                                 ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: test-results/shop-E2E08-rejects-BEMVINDO10-below-the-global-minimum-chromium/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/shop-E2E08-rejects-BEMVINDO10-below-the-global-minimum-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/shop-E2E08-rejects-BEMVINDO10-below-the-global-minimum-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  9) [chromium] › tests/shop.spec.ts:92:5 › E2E09 rejects SUPER20 below R$ 200 ─────────────────────
+
+    Error: browserType.launch: Executable doesn't exist at /root/.cache/ms-playwright/chromium_headless_shell-1248/chrome-headless-shell-linux64/chrome-headless-shell
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     npx playwright install                                 ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: test-results/shop-E2E09-rejects-SUPER20-below-R-200-chromium/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/shop-E2E09-rejects-SUPER20-below-R-200-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/shop-E2E09-rejects-SUPER20-below-R-200-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  10) [chromium] › tests/shop.spec.ts:100:5 › E2E10 applies SUPER20 exactly at R$ 200 ──────────────
+
+    Error: browserType.launch: Executable doesn't exist at /root/.cache/ms-playwright/chromium_headless_shell-1248/chrome-headless-shell-linux64/chrome-headless-shell
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     npx playwright install                                 ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: test-results/shop-E2E10-applies-SUPER20-exactly-at-R-200-chromium/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/shop-E2E10-applies-SUPER20-exactly-at-R-200-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/shop-E2E10-applies-SUPER20-exactly-at-R-200-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  11) [chromium] › tests/shop.spec.ts:109:5 › E2E11 excludes Gift Card from SUPER20 discount ───────
+
+    Error: browserType.launch: Executable doesn't exist at /root/.cache/ms-playwright/chromium_headless_shell-1248/chrome-headless-shell-linux64/chrome-headless-shell
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     npx playwright install                                 ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: test-results/shop-E2E11-excludes-Gift-Card-from-SUPER20-discount-chromium/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/shop-E2E11-excludes-Gift-Card-from-SUPER20-discount-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/shop-E2E11-excludes-Gift-Card-from-SUPER20-discount-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  12) [chromium] › tests/shop.spec.ts:121:5 › E2E12 preserves the cart and applied coupon after reload 
+
+    Error: browserType.launch: Executable doesn't exist at /root/.cache/ms-playwright/chromium_headless_shell-1248/chrome-headless-shell-linux64/chrome-headless-shell
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     npx playwright install                                 ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: test-results/shop-E2E12-preserves-the-c-010be-applied-coupon-after-reload-chromium/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/shop-E2E12-preserves-the-c-010be-applied-coupon-after-reload-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/shop-E2E12-preserves-the-c-010be-applied-coupon-after-reload-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  13) [chromium] › tests/shop.spec.ts:132:5 › E2E13 shows compatible and incompatible coupons on salespages 
+
+    Error: browserType.launch: Executable doesn't exist at /root/.cache/ms-playwright/chromium_headless_shell-1248/chrome-headless-shell-linux64/chrome-headless-shell
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     npx playwright install                                 ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: test-results/shop-E2E13-shows-compatibl-6698c-tible-coupons-on-salespages-chromium/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/shop-E2E13-shows-compatibl-6698c-tible-coupons-on-salespages-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/shop-E2E13-shows-compatibl-6698c-tible-coupons-on-salespages-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  14) [chromium] › tests/shop.spec.ts:139:5 › E2E14 removes a coupon and recalculates the total ────
+
+    Error: browserType.launch: Executable doesn't exist at /root/.cache/ms-playwright/chromium_headless_shell-1248/chrome-headless-shell-linux64/chrome-headless-shell
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     npx playwright install                                 ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: test-results/shop-E2E14-removes-a-coupon-and-recalculates-the-total-chromium/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/shop-E2E14-removes-a-coupon-and-recalculates-the-total-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/shop-E2E14-removes-a-coupon-and-recalculates-the-total-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  14 failed
+    [chromium] › tests/shop.spec.ts:35:5 › E2E01 marketplace loads ─────────────────────────────────
+    [chromium] › tests/shop.spec.ts:40:5 › E2E02 opens a salespage with coupon compatibility ───────
+    [chromium] › tests/shop.spec.ts:47:5 › E2E03 adds a product from the marketplace ───────────────
+    [chromium] › tests/shop.spec.ts:53:5 › E2E04 adds a product from its salespage ─────────────────
+    [chromium] › tests/shop.spec.ts:60:5 › E2E05 changes quantity in the cart ──────────────────────
+    [chromium] › tests/shop.spec.ts:68:5 › E2E06 removes a product ─────────────────────────────────
+    [chromium] › tests/shop.spec.ts:75:5 › E2E07 applies BEMVINDO10 ────────────────────────────────
+    [chromium] › tests/shop.spec.ts:84:5 › E2E08 rejects BEMVINDO10 below the global minimum ───────
+    [chromium] › tests/shop.spec.ts:92:5 › E2E09 rejects SUPER20 below R$ 200 ──────────────────────
+    [chromium] › tests/shop.spec.ts:100:5 › E2E10 applies SUPER20 exactly at R$ 200 ────────────────
+    [chromium] › tests/shop.spec.ts:109:5 › E2E11 excludes Gift Card from SUPER20 discount ─────────
+    [chromium] › tests/shop.spec.ts:121:5 › E2E12 preserves the cart and applied coupon after reload 
+    [chromium] › tests/shop.spec.ts:132:5 › E2E13 shows compatible and incompatible coupons on salespages 
+    [chromium] › tests/shop.spec.ts:139:5 › E2E14 removes a coupon and recalculates the total ──────
+npm error Lifecycle script `test:e2e` failed with error:
+npm error code 1
+npm error path /workspace/scratch/1baa0b704d5d/repo-fix/apps/web
+npm error workspace @ecommerce/web@1.0.0
+npm error location /workspace/scratch/1baa0b704d5d/repo-fix/apps/web
+npm error command failed
+npm error command sh -c playwright test
+exit=1

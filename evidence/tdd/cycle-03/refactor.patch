@@ -1,0 +1,16 @@
+--- /tmp/cycle3-green.ts	2026-10-08 11:47:01.423498905 +1000
++++ apps/api/src/domain/coupons/coupon-evaluator.ts	2026-10-08 11:47:07.189079397 +1000
+@@ -14,9 +14,11 @@
+   couponStatus:CouponStatus; couponCode:string|null; rejectionReason:string|null; amountToMinimumCents:number;
+ }
+ 
+-const money = (value:number) => Math.max(0, Math.round(value));
++function roundNonNegativeCents(value:number):number {
++  return Math.max(0, Math.round(value));
++}
+ const calculateDiscountCents = (eligibleSubtotalCents:number, percentageBps:number) =>
+-  Math.min(eligibleSubtotalCents, money(eligibleSubtotalCents * percentageBps / 10000));
++  Math.min(eligibleSubtotalCents, roundNonNegativeCents(eligibleSubtotalCents * percentageBps / 10000));
+ 
+ export class CouponEvaluator {
+   evaluate(items:CartItem[], coupon:CouponSnapshot|null|undefined, now = new Date()): Evaluation {

@@ -1,0 +1,64 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+FAIL src/domain/coupons/coupon-evaluator.spec.ts
+  CouponEvaluator
+    ✕ excludes products and discounts only eligible subtotal (4 ms)
+    ✕ returns no eligible items (2 ms)
+    ○ skipped global boundary 9999
+    ○ skipped global boundary 10000
+    ○ skipped global boundary 10001
+    ○ skipped specific boundary 19999
+    ○ skipped specific boundary 20000
+    ○ skipped specific boundary 20001
+    ○ skipped supports inclusion and exclusion precedence
+    ○ skipped expired
+    ○ skipped inactive
+    ○ skipped not started
+    ○ skipped rounds once in cents
+    ○ skipped never produces negative totals
+    ○ skipped handles empty cart and no coupon
+    ○ skipped uses fixed clock boundaries in UTC
+    ○ skipped covers acceptance scenarios A-H
+    ○ skipped covers standalone product eligibility partitions
+
+  ● CouponEvaluator › excludes products and discounts only eligible subtotal
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 12000
+    Received: 18000
+
+      17 |   it('excludes products and discounts only eligible subtotal', () => {
+      18 |     const result = evalr.evaluate([{product:product('h','headset',12000),quantity:1},{product:product('g','gift',6000),quantity:1}],validCoupon({excludedProductIds:['g']}),now);
+    > 19 |     expect(result.eligibleSubtotalCents).toBe(12000); expect(result.discountCents).toBe(1200); expect(result.totalCents).toBe(16800); expect(result.lines[1].eligible).toBe(false);
+         |                                          ^
+      20 |   });
+      21 |   it('supports inclusion and exclusion precedence', () => {
+      22 |     const result = evalr.evaluate([{product:product('a','a',10000),quantity:1},{product:product('b','b',10000),quantity:1}],validCoupon({includedProductIds:['a','b'],excludedProductIds:['b']}),now);
+
+      at Object.<anonymous> (src/domain/coupons/coupon-evaluator.spec.ts:19:42)
+
+  ● CouponEvaluator › returns no eligible items
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "NO_ELIGIBLE_ITEMS"
+    Received: "APPLIED"
+
+      23 |     expect(result.eligibleSubtotalCents).toBe(10000);
+      24 |   });
+    > 25 |   it('returns no eligible items', () => { expect(evalr.evaluate([{product:product('g','gift',12000),quantity:1}],validCoupon({excludedProductIds:['g']}),now).couponStatus).toBe('NO_ELIGIBLE_ITEMS'); });
+         |                                                                                                                                                                             ^
+      26 |   it.each([
+      27 |     ['expired',{expiresAt:new Date('2026-01-01T00:00:00Z')},'EXPIRED'],['inactive',{isActive:false},'INACTIVE'],['not started',{startsAt:new Date('2030-01-01T00:00:00Z')},'NOT_STARTED'],
+      28 |   ])('%s', (_label,overrides,status) => expect(evalr.evaluate([{product:product('p'),quantity:1}],validCoupon(overrides),now).couponStatus).toBe(status));
+
+      at Object.<anonymous> (src/domain/coupons/coupon-evaluator.spec.ts:25:173)
+
+Test Suites: 1 failed, 1 total
+Tests:       2 failed, 16 skipped, 18 total
+Snapshots:   0 total
+Time:        2.359 s, estimated 3 s
+Ran all test suites with tests matching "excludes products|returns no eligible".
+
+COMMAND=npx jest --runInBand -t "excludes products|returns no eligible"
+EXIT_CODE=1

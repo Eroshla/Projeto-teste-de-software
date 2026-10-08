@@ -24,15 +24,16 @@ Produtos: Headset Gamer (R$ 120), Mouse Gamer (R$ 80), Teclado Mecânico (R$ 150
 - `npm run test:e2e` — Playwright/Chromium com API e web reais.
 - `npm run test:coverage` — cobertura real do domínio em `apps/api/coverage`.
 - `npm run build` — builds de API e web.
-- `npm run report:pdf` — gera `reports/relatorio.pdf` a partir do relatório Markdown (requer Chromium Playwright).
-- `npm run validate` — typecheck, lint, testes e build.
+- `npm run report:pdf` — gera `reports/relatorio.pdf` a partir do relatório Markdown, incorporando tabelas, links e prints. Usa Playwright quando há Chromium e ReportLab como fallback local.
+- `npm run validate:fast` — typecheck, lint, unitários e builds, sem depender de navegador.
+- `npm run validate` — validação completa, incluindo integração, E2E, cobertura e PDF. Requer `npx playwright install chromium` antes da execução E2E.
 
 ## TDD e defeitos
 
-As regras, tabela de decisão, casos formais e roteiro oral estão em `docs/`. Os ciclos estão descritos em `docs/tdd-evidence.md`; os mutantes controlados D01/D02 em `docs/defect-reports.md`. Como o diretório original não tinha Git, não foram criados commits retrospectivos.
+As regras, tabela de decisão, casos formais, execução e roteiro oral estão em `docs/`. Os ciclos estão descritos em `docs/tdd-evidence.md`; os mutantes controlados D01/D02 em `docs/defect-reports.md`. Prints e logs versionados ficam em `evidence/`; a matriz de conformidade está em `docs/academic-compliance.md`.
 
 ## Problemas comuns
 
-Se a API não conectar, confira `DATABASE_URL`, rode `npx prisma generate --schema apps/api/prisma/schema.prisma` e `npm run db:setup`. Se o E2E não encontrar navegador, execute `npx playwright install chromium`.
+Se a API não conectar, confira `DATABASE_URL`, rode `npx prisma generate --schema apps/api/prisma/schema.prisma` e `npm run db:setup`. Se o E2E não encontrar navegador, execute `npx playwright install chromium`. Em ambientes sem download de navegador, o relatório registra E2E como BLOCKED e preserva o log da tentativa.
 
 Projeto publicado: **Projeto-teste-de-software** — trabalho acadêmico de Testes de Software.

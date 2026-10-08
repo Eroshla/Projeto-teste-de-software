@@ -1,0 +1,19 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> ecommerce-cupons@1.0.0 test:integration
+> npm run test:integration -w apps/api
+
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> @ecommerce/api@1.0.0 test:integration
+> jest --config test/jest-integration.json --runInBand
+
+PASS test/health.e2e-spec.ts
+PASS test/quote.e2e-spec.ts
+
+Test Suites: 2 passed, 2 total
+Tests:       14 passed, 14 total
+Snapshots:   0 total
+Time:        4.038 s
+Ran all test suites.
+exit=0
