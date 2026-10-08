@@ -1,9 +1,10 @@
-import { readFile, mkdir, writeFile } from 'node:fs/promises';
+import { readFile, mkdir, writeFile, rename, rm } from 'node:fs/promises';
 import { existsSync, readFileSync } from 'node:fs';
 import { dirname, resolve, extname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { tmpdir } from 'node:os';
-import { spawn } from 'node:child_process';
+import { spawn, execFile } from 'node:child_process';
+import { promisify } from 'node:util';
 import { chromium } from '@playwright/test';
 import { marked } from 'marked';
 
@@ -11,7 +12,10 @@ const scriptDir = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(scriptDir, '..');
 const reportSource = resolve(repoRoot, 'reports/relatorio.md');
 const reportOutput = resolve(repoRoot, 'reports/relatorio.pdf');
+const reportTemporary = resolve(dirname(reportOutput), `.relatorio-${process.pid}.tmp.pdf`);
 const reportHtml = resolve(tmpdir(), `nexo-store-report-${process.pid}.html`);
+const execFileAsync = promisify(execFile);
+const minimumPdfBytes = 1024;
 const markdown = await readFile(reportSource, 'utf8');
 
 function mimeFor(path) {
@@ -75,7 +79,7 @@ await mkdir(dirname(reportOutput), { recursive: true });
 
 function runFallback() {
   return new Promise((resolvePromise, rejectPromise) => {
-    const child = spawn('python3', [resolve(scriptDir, 'report-pdf-fallback.py'), reportHtml, reportOutput], { stdio: ['ignore', 'pipe', 'pipe'] });
+    const child = spawn('python3', [resolve(scriptDir, 'report-pdf-fallback.py'), reportHtml, reportTemporary], { stdio: ['ignore', 'pipe', 'pipe'] });
     let stderr = '';
     child.stderr.on('data', chunk => { stderr += chunk; });
     child.stdout.pipe(process.stdout);
@@ -84,23 +88,76 @@ function runFallback() {
   });
 }
 
+async function validatePdf(path) {
+  const bytes = await readFile(path);
+  if (bytes.length < minimumPdfBytes) {
+    throw new Error(`PDF inválido: ${bytes.length} bytes (mínimo: ${minimumPdfBytes}).`);
+  }
+  // Basic, dependency-free checks work on Windows and Linux. Both classic xref
+  // tables and PDF 1.5+ xref streams are allowed; this is not a full PDF parser.
+  const text = bytes.toString('latin1');
+  const ending = /startxref\s+(\d+)\s+%%EOF\s*$/.exec(text);
+  if (!/^%PDF-\d\.\d(?:\r\n|\r|\n)/.test(text) || !ending) {
+    throw new Error('PDF inválido: cabeçalho ou marcador final ausente.');
+  }
+  const offset = Number(ending[1]);
+  const xref = text.slice(offset, ending.index);
+  const streamDictionary = /^\d+\s+\d+\s+obj\s*<<(.*?)>>\s*stream(?:\r\n|\n)/s.exec(xref);
+  if (!Number.isSafeInteger(offset) || offset <= 0 || offset >= ending.index ||
+      (!/^xref\s/.test(xref) && !/\/Type\s*\/XRef\b/.test(streamDictionary?.[1] ?? ''))) {
+    throw new Error('PDF inválido: referência startxref inconsistente.');
+  }
+
+  let info;
+  try {
+    info = await execFileAsync('pdfinfo', [path], {
+      encoding: 'utf8', timeout: 30000, windowsHide: true,
+      env: { ...process.env, LC_ALL: 'C', LANG: 'C' },
+    });
+  } catch (error) {
+    if (error.code === 'ENOENT') {
+      console.warn('pdfinfo não encontrado; somente verificações estruturais básicas foram executadas. Instale Poppler para validação com parser.');
+      return `${bytes.length} bytes; verificações estruturais básicas`;
+    }
+    throw new Error(`PDF inválido ou não verificável por pdfinfo: ${error.stderr || error.message}`, { cause: error });
+  }
+  const pages = /^Pages:\s+(\d+)\s*$/m.exec(info.stdout);
+  if (!pages || Number(pages[1]) < 1 || /Syntax\s+(?:Error|Warning)/i.test(info.stderr)) {
+    throw new Error(`PDF inválido: pdfinfo não confirmou páginas válidas. ${info.stderr.trim()}`);
+  }
+  return `${pages[1]} páginas; ${bytes.length} bytes; verificado por pdfinfo`;
+}
+
+let renderer = 'Playwright';
 try {
-  const browser = await chromium.launch({ headless: true });
-  const page = await browser.newPage();
-  await page.setContent(html, { waitUntil: 'load' });
-  await page.pdf({
-    path: reportOutput,
-    format: 'A4',
-    printBackground: true,
-    displayHeaderFooter: true,
-    headerTemplate: '<div></div>',
-    footerTemplate: '<div style="font-size:8px;width:100%;text-align:center;color:#687080">Nexo Store — Testes de Software · Página <span class="pageNumber"></span> de <span class="totalPages"></span></div>',
-    margin: { top: '18mm', bottom: '18mm', left: '16mm', right: '16mm' },
-  });
-  await browser.close();
-  console.log('PDF gerado em reports/relatorio.pdf (renderer Playwright).');
-} catch (error) {
-  console.warn(`Chromium indisponível; usando renderer ReportLab fallback: ${error.message}`);
-  await runFallback();
-  console.log('PDF gerado em reports/relatorio.pdf (renderer ReportLab fallback).');
+  try {
+    const browser = await chromium.launch({ headless: true });
+    try {
+      const page = await browser.newPage();
+      await page.setContent(html, { waitUntil: 'load' });
+      await page.pdf({
+        path: reportTemporary,
+        format: 'A4',
+        printBackground: true,
+        displayHeaderFooter: true,
+        headerTemplate: '<div></div>',
+        footerTemplate: '<div style="font-size:8px;width:100%;text-align:center;color:#687080">Nexo Store — Testes de Software · Página <span class="pageNumber"></span> de <span class="totalPages"></span></div>',
+        margin: { top: '18mm', bottom: '18mm', left: '16mm', right: '16mm' },
+      });
+    } finally {
+      await browser.close();
+    }
+  } catch (error) {
+    console.warn(`Chromium indisponível; usando renderer ReportLab fallback: ${error.message}`);
+    await rm(reportTemporary, { force: true });
+    await runFallback();
+    renderer = 'ReportLab fallback';
+  }
+  // Validation failures must fail the command, not trigger a renderer fallback.
+  const validation = await validatePdf(reportTemporary);
+  await rename(reportTemporary, reportOutput);
+  console.log(`PDF gerado em reports/relatorio.pdf (renderer ${renderer}; ${validation}).`);
+} finally {
+  await rm(reportTemporary, { force: true });
+  await rm(reportHtml, { force: true });
 }
