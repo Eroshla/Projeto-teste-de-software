@@ -1,0 +1,6 @@
+export const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
+export type Product = {id:string;slug:string;name:string;description:string;priceCents:number;image:string};
+export type Coupon = {code:string;description:string;percentageBps:number;minimumSubtotalCents:number;compatible?:boolean;incompatibilityReason?:string|null};
+export type Quote = {currency:string;lines:Array<{productId:string;slug:string;name:string;image?:string;unitPriceCents:number;quantity:number;lineSubtotalCents:number;eligible:boolean}>;subtotalCents:number;eligibleSubtotalCents:number;discountCents:number;totalCents:number;couponCode:string|null;couponStatus:string;rejectionReason:string|null;amountToMinimumCents:number};
+export const brl = (cents:number) => (cents/100).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+export async function api<T>(path:string, init?:RequestInit):Promise<T> { const response = await fetch(`${API_URL}${path}`,{...init,headers:{'Content-Type':'application/json',...(init?.headers || {})},cache:'no-store'}); if(!response.ok){const body = await response.json().catch(()=>({})); throw new Error(body.message || body.error || 'Não foi possível conectar à API.');} return response.json() as Promise<T>; }
