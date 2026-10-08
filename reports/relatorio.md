@@ -88,6 +88,8 @@ A suíte unitária usa Jest, parametrização de limites, relógio fixo e snapsh
 
 A execução local desta sessão encontrou 14 testes E2E no arquivo. O navegador Chromium não estava instalado neste ambiente, portanto a execução E2E foi marcada BLOCKED, e não PASS. O workflow instala Chromium no CI.
 
+Depois do push, o run remoto [`37719710116`](https://github.com/Eroshla/Projeto-teste-de-software/actions/runs/37719710116) terminou com sucesso nos jobs Ubuntu e Windows. Cada job executou os 14 testes Playwright e registrou `14 passed`; cobertura, PDF e artefatos também foram concluídos. O log resumido está em [`evidence/logs/ci-remote.md`](../evidence/logs/ci-remote.md). Assim, o estado local é BLOCKED por infraestrutura, enquanto a execução de aceitação no CI está PASS.
+
 ![Playwright encontrou os 14 casos E2E](../evidence/screenshots/e2e-list-14-tests.png)
 
 *Figura 1 — Descoberta dos 14 casos E2E pelo Playwright.*
@@ -164,7 +166,7 @@ Os logs, patches e explicações completas estão em [`docs/tdd-evidence.md`](..
 | Lint | API e web sem erros | PASS |
 | Build | NestJS e Next.js compilados | PASS |
 | Cobertura | 100% statements/lines/functions; 96% branches no domínio | PASS |
-| E2E | 14 casos listados; Chromium ausente para executar | BLOCKED |
+| E2E | **14/14 aprovados no CI remoto em Ubuntu e Windows**; Chromium ausente apenas na execução local desta sessão | PASS no CI / BLOCKED local |
 | PDF | Gerado com renderer HTML/ReportLab fallback e imagens embutidas | PASS |
 
 Os logs brutos estão em `evidence/logs/`. A cobertura informada é exclusivamente do domínio; não é apresentada como cobertura total da API ou do frontend.
@@ -203,7 +205,7 @@ Os patches e logs estão em `evidence/defects/d01/` e `evidence/defects/d02/`.
 |---|---|---|---|
 | Jest | Unidade, regressão e cobertura | Rápido, parametrização e relógio controlado | Não valida HTTP/UI; usado no domínio. |
 | Supertest | Integração de controllers e contratos | Exercita API NestJS sem servidor externo | Não substitui navegador; usado com SQLite. |
-| Playwright | Sistema/E2E e aceitação | API real, acessibilidade, screenshots e trace | Depende de Chromium; 14 testes foram escritos e a sessão local ficou BLOCKED por navegador ausente. |
+| Playwright | Sistema/E2E e aceitação | API real, acessibilidade, screenshots e trace | Depende de Chromium; a sessão local ficou BLOCKED, mas os 14 testes passaram nos jobs Ubuntu e Windows do CI. |
 | Postman | Exploração manual de endpoints | Inspeção rápida de requisições | Execução manual não é suficiente para regressão; apenas planejado. |
 | k6 | Desempenho e carga | Métricas de latência e throughput | Não verifica regra funcional; não executado. |
 
@@ -211,15 +213,15 @@ Os patches e logs estão em `evidence/defects/d01/` e `evidence/defects/d02/`.
 
 Os testes unitários detectam limites, temporalidade, exclusões, arredondamento e total não negativo. A integração demonstrou que a API consulta preços canônicos e rejeita preço adulterado, quantidades inválidas, IDs duplicados e campos desconhecidos. As mutações D01 e D02 foram detectadas, o que fornece evidência de eficácia além de uma contagem de cobertura.
 
-A cobertura de 96% de branches pertence somente ao `CouponEvaluator`. Ela não garante ausência de defeitos nos controllers, Prisma, frontend, navegador ou ambiente. A suíte E2E foi ampliada para os 14 cenários, mas deve ser executada em uma máquina/CI com Chromium instalado antes de declarar aprovação final dessa camada.
+A cobertura de 96% de branches pertence somente ao `CouponEvaluator`. Ela não garante ausência de defeitos nos controllers, Prisma, frontend, navegador ou ambiente. A suíte E2E foi ampliada para os 14 cenários e aprovada no CI em Ubuntu e Windows; a limitação local da sessão foi a ausência do Chromium.
 
 Riscos residuais incluem ausência de pagamento, autenticação, estoque, carga, concorrência e execução independente por outro testador. Como melhorias futuras, recomenda-se um teste de contrato compartilhado, k6 em ambiente controlado, execução E2E em Linux e Windows e revisão independente dos casos.
 
 # 15. Conclusão
 
-O projeto corrigido concentra regras monetárias no backend, valida os limites de negócio e mantém evidências autênticas de aprovação e falha controlada. Unitários, integração, typecheck, lint, build e cobertura foram executados com sucesso nesta sessão. O E2E possui 14 casos versionados e permanece explicitamente BLOCKED apenas pela ausência local do Chromium; não é apresentado como aprovado sem execução real.
+O projeto corrigido concentra regras monetárias no backend, valida os limites de negócio e mantém evidências autênticas de aprovação e falha controlada. Unitários, integração, typecheck, lint, build e cobertura foram executados com sucesso nesta sessão. O E2E possui 14 casos versionados: ficou BLOCKED no ambiente local por ausência do Chromium, mas foi executado e aprovado nos dois jobs do CI remoto. Não há aprovação baseada apenas em código escrito; o run remoto registra os 14 casos como `passed`.
 
-A matriz de rastreabilidade dos 14 critérios acadêmicos está em [`docs/academic-compliance.md`](../docs/academic-compliance.md). O estado final do CI remoto deve ser verificado após o push desta branch.
+A matriz de rastreabilidade dos 14 critérios acadêmicos está em [`docs/academic-compliance.md`](../docs/academic-compliance.md). O run remoto `37719710116` confirmou a suíte completa e publicou os artefatos de cobertura, Playwright e PDF.
 
 # 16. Referências e artefatos
 

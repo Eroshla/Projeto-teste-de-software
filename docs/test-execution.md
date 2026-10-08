@@ -30,7 +30,7 @@ O banco usa SQLite em `apps/api/prisma/dev.db`; a migration e o seed são idempo
 |---|---|---|
 | CT01–CT10 | Unitário e integração | PASS; limites, arredondamento, validade, inclusão e exclusão cobertos |
 | CT11–CT14 | Integração | PASS; preço adulterado, quantidade, duplicidade e campos desconhecidos rejeitados |
-| CT15–CT16 | E2E escrito | Implementados; execução local bloqueada pela ausência do Chromium |
+| CT15–CT16 | E2E escrito | **PASS no CI remoto (14/14 em Ubuntu e Windows)**; execução local desta sessão ficou BLOCKED pela ausência do Chromium |
 
 ## E2E
 
@@ -44,6 +44,10 @@ npm run test:e2e
 ```
 
 O workflow do GitHub instala o Chromium antes da etapa E2E e publica `playwright-report`, `test-results` e screenshots como artefatos.
+
+### Execução remota confirmada
+
+O run [`37719710116`](https://github.com/Eroshla/Projeto-teste-de-software/actions/runs/37719710116), associado ao commit [`59047b0d`](https://github.com/Eroshla/Projeto-teste-de-software/commit/59047b0dd534d12631314e6e0d591f937fb4fca1), terminou com **success** em `ubuntu-latest` e `windows-latest`. Em cada job, Playwright executou os 14 testes e registrou `14 passed`; cobertura, geração do PDF e upload dos artefatos também terminaram com sucesso. O registro resumido está em [`ci-remote.md`](../evidence/logs/ci-remote.md).
 
 ## Evidência TDD e defeitos
 
