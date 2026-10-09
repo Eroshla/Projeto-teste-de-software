@@ -38,8 +38,12 @@ test('E2E01 marketplace loads', async ({ page }) => {
 });
 
 test('E2E02 opens a salespage with coupon compatibility', async ({ page }) => {
-  await page.getByTestId('product-card-gift-card').getByRole('link').first().click();
-  await expect(page.getByRole('heading', { name: 'Gift Card', exact: true })).toBeVisible();
+  await Promise.all([
+    page.waitForURL('**/products/gift-card'),
+    page.getByTestId('product-card-gift-card').getByRole('link').first().click(),
+  ]);
+  await expect(page.getByTestId('product-page')).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Gift Card', exact: true, level: 1 })).toBeVisible();
   await expect(page.getByTestId('coupon-card-BEMVINDO10')).toContainText('Incompatível');
   await capture(page, 'e2e-salespage-incompatible-coupon.png');
 });
@@ -103,6 +107,10 @@ test('E2E10 applies SUPER20 exactly at R$ 200', async ({ page }) => {
   await openCart(page);
   await addCoupon(page, 'SUPER20');
   await expect(page.getByTestId('coupon-success')).toBeVisible();
+  await expect(page.getByTestId('original-price-headset-gamer')).toHaveText('R$ 120,00');
+  await expect(page.getByTestId('discounted-price-headset-gamer')).toHaveText('R$ 96,00');
+  await expect(page.getByTestId('original-price-mouse-gamer')).toHaveText('R$ 80,00');
+  await expect(page.getByTestId('discounted-price-mouse-gamer')).toHaveText('R$ 64,00');
   await expect(page.getByTestId('cart-total')).toContainText('R$ 160,00');
 });
 
@@ -113,6 +121,7 @@ test('E2E11 excludes Gift Card from SUPER20 discount', async ({ page }) => {
   await openCart(page);
   await addCoupon(page, 'SUPER20');
   await expect(page.getByTestId('cart-line-gift-card')).toContainText('Não elegível');
+  await expect(page.getByTestId('original-price-gift-card')).toHaveCount(0);
   await expect(page.getByTestId('cart-discount')).toContainText('R$ 40,00');
   await expect(page.getByTestId('cart-total')).toContainText('R$ 220,00');
   await capture(page, 'e2e-gift-card-excluded.png');
@@ -130,7 +139,10 @@ test('E2E12 preserves the cart and applied coupon after reload', async ({ page }
 });
 
 test('E2E13 shows compatible and incompatible coupons on salespages', async ({ page }) => {
-  await page.getByTestId('product-card-headset-gamer').getByRole('link').first().click();
+  await Promise.all([
+    page.waitForURL('**/products/headset-gamer'),
+    page.getByTestId('product-card-headset-gamer').getByRole('link').first().click(),
+  ]);
   await expect(page.getByTestId('coupon-card-BEMVINDO10')).toContainText('Compatível');
   await page.goto('/products/gift-card');
   await expect(page.getByTestId('coupon-card-BEMVINDO10')).toContainText('Incompatível');

@@ -16,7 +16,9 @@ describe('CouponEvaluator', () => {
   });
   it('excludes products and discounts only eligible subtotal', () => {
     const result = evalr.evaluate([{product:product('h','headset',12000),quantity:1},{product:product('g','gift',6000),quantity:1}],validCoupon({excludedProductIds:['g']}),now);
-    expect(result.eligibleSubtotalCents).toBe(12000); expect(result.discountCents).toBe(1200); expect(result.totalCents).toBe(16800); expect(result.lines[1].eligible).toBe(false);
+    expect(result.eligibleSubtotalCents).toBe(12000); expect(result.discountCents).toBe(1200); expect(result.totalCents).toBe(16800);
+    expect(result.lines[0]).toMatchObject({lineDiscountCents:1200,lineTotalCents:10800});
+    expect(result.lines[1]).toMatchObject({eligible:false,lineDiscountCents:0,lineTotalCents:6000});
   });
   it('supports inclusion and exclusion precedence', () => {
     const result = evalr.evaluate([{product:product('a','a',10000),quantity:1},{product:product('b','b',10000),quantity:1}],validCoupon({includedProductIds:['a','b'],excludedProductIds:['b']}),now);
@@ -27,6 +29,11 @@ describe('CouponEvaluator', () => {
     ['expired',{expiresAt:new Date('2026-01-01T00:00:00Z')},'EXPIRED'],['inactive',{isActive:false},'INACTIVE'],['not started',{startsAt:new Date('2030-01-01T00:00:00Z')},'NOT_STARTED'],
   ])('%s', (_label,overrides,status) => expect(evalr.evaluate([{product:product('p'),quantity:1}],validCoupon(overrides),now).couponStatus).toBe(status));
   it('rounds once in cents', () => { const result = evalr.evaluate([{product:product('p','p',10005),quantity:1}],validCoupon(),now); expect(result.discountCents).toBe(1001); });
+  it('allocates the exact discount between eligible lines', () => {
+    const result = evalr.evaluate([{product:product('a','a',5001),quantity:1},{product:product('b','b',5000),quantity:1}],validCoupon(),now);
+    expect(result.lines.reduce((sum,line) => sum + line.lineDiscountCents,0)).toBe(result.discountCents);
+    expect(result.lines.reduce((sum,line) => sum + line.lineTotalCents,0)).toBe(result.totalCents);
+  });
   it('never produces negative totals', () => { const result = evalr.evaluate([{product:product('p','p',10000),quantity:1}],validCoupon({percentageBps:100000}),now); expect(result.totalCents).toBe(0); });
   it('handles empty cart and no coupon', () => { expect(evalr.evaluate([],validCoupon(),now).couponStatus).toBe('EMPTY_CART'); expect(evalr.evaluate([],null,now).couponStatus).toBe('NONE'); });
   it('uses fixed clock boundaries in UTC', () => { expect(evalr.evaluate([{product:product('p'),quantity:1}],validCoupon({startsAt:now}),now).couponStatus).toBe('APPLIED'); expect(evalr.evaluate([{product:product('p'),quantity:1}],validCoupon({expiresAt:now}),now).couponStatus).toBe('EXPIRED'); });

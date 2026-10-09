@@ -8,7 +8,7 @@ export interface CouponSnapshot {
   code:string; description?:string; percentageBps:number; minimumSubtotalCents:number;
   startsAt:Date; expiresAt:Date; isActive:boolean; includedProductIds?:string[]; excludedProductIds?:string[];
 }
-export interface EvaluatedLine { productId:string; slug:string; name:string; unitPriceCents:number; quantity:number; lineSubtotalCents:number; eligible:boolean; }
+export interface EvaluatedLine { productId:string; slug:string; name:string; unitPriceCents:number; quantity:number; lineSubtotalCents:number; lineDiscountCents:number; lineTotalCents:number; eligible:boolean; }
 export interface Evaluation {
   lines:EvaluatedLine[]; subtotalCents:number; eligibleSubtotalCents:number; discountCents:number; totalCents:number;
   couponStatus:CouponStatus; couponCode:string|null; rejectionReason:string|null; amountToMinimumCents:number;
@@ -25,7 +25,8 @@ export class CouponEvaluator {
     const subtotalCents = items.reduce((sum,item) => sum + item.product.priceCents * item.quantity, 0);
     const baseLines = items.map(item => ({
       productId:item.product.id, slug:item.product.slug, name:item.product.name, unitPriceCents:item.product.priceCents,
-      quantity:item.quantity, lineSubtotalCents:item.product.priceCents * item.quantity, eligible:false,
+      quantity:item.quantity, lineSubtotalCents:item.product.priceCents * item.quantity,
+      lineDiscountCents:0, lineTotalCents:item.product.priceCents * item.quantity, eligible:false,
     }));
     if (!coupon) return {lines:baseLines, subtotalCents, eligibleSubtotalCents:0, discountCents:0, totalCents:subtotalCents, couponStatus:'NONE', couponCode:null, rejectionReason:null, amountToMinimumCents:0};
 
@@ -49,7 +50,20 @@ export class CouponEvaluator {
     const eligibleSubtotalCents = eligibleLines.reduce((sum,line) => sum + line.lineSubtotalCents, 0);
     if (eligibleSubtotalCents === 0) return {...reject('NO_ELIGIBLE_ITEMS','Nenhum produto do carrinho é elegível para este cupom.'), lines};
     const discountCents = calculateDiscountCents(eligibleSubtotalCents, coupon.percentageBps);
-    return {lines, subtotalCents, eligibleSubtotalCents, discountCents, totalCents:Math.max(0, subtotalCents-discountCents), couponStatus:'APPLIED', couponCode:normalizedCode, rejectionReason:null, amountToMinimumCents:0};
+    let remainingDiscountCents = discountCents;
+    let remainingEligibleSubtotalCents = eligibleSubtotalCents;
+    const discountedLines = lines.map(line => {
+      if (!line.eligible || line.lineSubtotalCents === 0) return line;
+      const lineDiscountCents = Math.min(
+        line.lineSubtotalCents,
+        remainingDiscountCents,
+        roundNonNegativeCents(line.lineSubtotalCents * remainingDiscountCents / remainingEligibleSubtotalCents),
+      );
+      remainingDiscountCents -= lineDiscountCents;
+      remainingEligibleSubtotalCents -= line.lineSubtotalCents;
+      return {...line, lineDiscountCents, lineTotalCents:line.lineSubtotalCents-lineDiscountCents};
+    });
+    return {lines:discountedLines, subtotalCents, eligibleSubtotalCents, discountCents, totalCents:Math.max(0, subtotalCents-discountCents), couponStatus:'APPLIED', couponCode:normalizedCode, rejectionReason:null, amountToMinimumCents:0};
   }
 }
 

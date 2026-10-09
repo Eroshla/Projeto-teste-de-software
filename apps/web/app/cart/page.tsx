@@ -43,7 +43,12 @@ export default function CartPage() {
                     </div>
                   </div>
                   <div className="line-actions">
-                    <strong>{brl(line.lineSubtotalCents)}</strong><br />
+                    {quote.couponStatus === 'APPLIED' && line.lineDiscountCents > 0 ? (
+                      <div className="line-price-with-discount">
+                        <del data-testid={`original-price-${line.slug}`}>{brl(line.lineSubtotalCents)}</del>
+                        <strong data-testid={`discounted-price-${line.slug}`}>{brl(line.lineTotalCents)}</strong>
+                      </div>
+                    ) : <strong>{brl(line.lineSubtotalCents)}</strong>}
                     <button className="muted" style={{ border: 0, background: 'none', cursor: 'pointer' }} data-testid={`remove-${line.slug}`} onClick={() => remove(line.productId)}>Remover</button>
                   </div>
                 </div>

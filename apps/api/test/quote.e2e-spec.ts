@@ -55,6 +55,7 @@ describe('Catalog, coupons and cart quote integration', () => {
     const response = await quote([{ productId: products['headset-gamer'], quantity: 1 }], ' bemvindo10 ');
     expect(response.status).toBe(201);
     expect(response.body).toMatchObject({ subtotalCents: 12000, eligibleSubtotalCents: 12000, discountCents: 1200, totalCents: 10800, couponCode: 'BEMVINDO10', couponStatus: 'APPLIED' });
+    expect(response.body.lines[0]).toMatchObject({ lineSubtotalCents: 12000, lineDiscountCents: 1200, lineTotalCents: 10800 });
   });
 
   it('rejects a global minimum below R$ 100 and accepts exactly R$ 100', async () => {
@@ -78,7 +79,7 @@ describe('Catalog, coupons and cart quote integration', () => {
       { productId: products['gift-card'], quantity: 1 },
     ], 'SUPER20');
     expect(response.body).toMatchObject({ subtotalCents: 26000, eligibleSubtotalCents: 20000, discountCents: 4000, totalCents: 22000 });
-    expect(response.body.lines.find((line: { slug: string }) => line.slug === 'gift-card')).toMatchObject({ eligible: false });
+    expect(response.body.lines.find((line: { slug: string }) => line.slug === 'gift-card')).toMatchObject({ eligible: false, lineDiscountCents: 0, lineTotalCents: 6000 });
   });
 
   it('returns the correct status for expired, inactive and unknown coupons', async () => {
